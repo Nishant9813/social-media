@@ -27,3 +27,4 @@ mongoose.connect("mongodb+srv://nishant:Nishant@cluster0.wxdfkze.mongodb.net/",{
 app.listen(port, ()=>{
     console.log("Server running on port: ",port)
 })
+//will be continue tommorrow for complete regitration
