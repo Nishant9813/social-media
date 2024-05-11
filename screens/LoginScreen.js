@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   KeyboardAvoidingView,
   Pressable,
@@ -7,13 +8,49 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [pass, setPassword] = useState("");
   const navigation = useNavigation();
+
+  useEffect(()=>{
+    const checkLoginStatus = async()=>{
+      try{
+        const token = await AsyncStorage.getItem("authToken");
+        if(token){
+          navigation.replace("Home");
+        }else{
+          //token not found it show the login screen itself
+        }
+      }catch(error){
+        console.log(error);
+      }
+    }
+
+    checkLoginStatus()
+  },[])
+
+  const handleLogin = ()=>{
+    const user = {
+      email : email,
+      password : pass
+    }
+
+    axios.post("http://192.168.0.111:4000/login",user).then(res =>{
+      console.log(res);
+      const token  = res.data.token;
+      AsyncStorage.setItem("authToken",token);
+      navigation.navigate("Home");
+    }).catch((error) =>{
+      Alert.alert("Login Error","Invalid Username and Password");
+      console.log(error);
+    })
+  }
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView>
@@ -69,6 +106,7 @@ const LoginScreen = () => {
             />
           </View>
           <Pressable
+            onPress={handleLogin}
             style={{
               width: 200,
               backgroundColor: "#0063AD",
