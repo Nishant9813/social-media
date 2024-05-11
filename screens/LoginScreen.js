@@ -35,22 +35,34 @@ const LoginScreen = () => {
     checkLoginStatus()
   },[])
 
-  const handleLogin = ()=>{
+  const handleLogin = () => {
     const user = {
-      email : email,
-      password : pass
-    }
-
-    axios.post("http://192.168.0.111:4000/login",user).then(res =>{
-      console.log(res);
-      const token  = res.data.token;
-      AsyncStorage.setItem("authToken",token);
-      navigation.navigate("Home");
-    }).catch((error) =>{
-      Alert.alert("Login Error","Invalid Username and Password");
-      console.log(error);
-    })
-  }
+      email: email,
+      password: pass
+    };
+  
+    axios.post("http://192.168.0.111:4000/login", user)
+      .then(res => {
+        console.log(res);
+        const token = res.data.token;
+        AsyncStorage.setItem("authToken", token);
+        navigation.navigate("Home");
+      })
+      .catch(error => {
+        if (error.response) {
+          // console.log(error.response.data);
+          // console.log(error.response.status);
+          // console.log(error.response.headers);
+          Alert.alert("Login Error", error.response.data.message);
+        } else if (error.request) {
+          console.log(error.request);
+          Alert.alert("Login Error", "No response received from server");
+        } else {
+          console.log("Error", error.message);
+          Alert.alert("Login Error", "An error occurred while processing your request");
+        }
+      });
+  };
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView>
