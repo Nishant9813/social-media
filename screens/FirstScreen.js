@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Pressable,
@@ -16,9 +17,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const FirstScreen = () => {
-  const colorScheme = useColorScheme();
+  const colorScheme = "light";
 
   const colors = {
     background: colorScheme == "dark" ? "white" : "#3F384C",
@@ -28,7 +31,53 @@ const FirstScreen = () => {
     buttonBackground: colorScheme === "dark" ? "#7BBADE" : "white",
     buttonTextColor: colorScheme === "dark" ? "white" : "#3F384C",
   };
+
+  const [email, setEmail] = useState("");
+  const [pass, setPassword] = useState("");
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const token = await AsyncStorage.getItem("authToken");
+        if (token) {
+          navigation.replace("Home");
+        } else {
+          //token not found it show the login screen itself
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
+  const handleLogin = () => {
+    const user = {
+      email: email,
+      password: pass
+    };
+  
+    axios.post("http://192.168.0.111:4000/login", user)
+      .then(res => {
+        console.log(res);
+        const token = res.data.token;
+        AsyncStorage.setItem("authToken", token);
+        navigation.navigate("Home");
+      })
+      .catch(error => {
+        if (error.response) {
+          Alert.alert("Login Error", error.response.data.message);
+        } else if (error.request) {
+          console.log(error.request);
+          Alert.alert("Login Error", "No response received from server");
+        } else {
+          console.log("Error", error.message);
+          Alert.alert("Login Error", "An error occurred while processing your request");
+        }
+      });
+  };
 
   return (
     <SafeAreaView
@@ -38,7 +87,12 @@ const FirstScreen = () => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Pressable onPress={()=>{navigation.goBack()}} style={{ position: "absolute", top: 50, left: 10 }}>
+        <Pressable
+          onPress={() => {
+            navigation.goBack();
+          }}
+          style={{ position: "absolute", top: 50, left: 10 }}
+        >
           <FontAwesome5 name="backward" size={24} color="white" />
         </Pressable>
         <View style={styles.header}>
@@ -70,6 +124,8 @@ const FirstScreen = () => {
               placeholder="Enter your Registration no."
               placeholderTextColor="#3F384C"
               style={[styles.inputField, { color: colors.textInput }]}
+              value={email}
+              onChangeText={(text)=>setEmail(text)}
             />
           </View>
           <View
@@ -83,9 +139,12 @@ const FirstScreen = () => {
               placeholder="Enter your password"
               placeholderTextColor="#3F384C"
               style={[styles.inputField, { color: colors.textInput }]}
+              secureTextEntry={true}
+              onChangeText={(text) => setPassword(text)}
             />
           </View>
           <Pressable
+          onPress={handleLogin}
             style={[
               styles.button,
               { backgroundColor: colors.buttonBackground },

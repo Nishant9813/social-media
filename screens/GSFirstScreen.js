@@ -1,11 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import Swiper from "react-native-swiper";
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GSFirstScreen = () => {
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const token = await AsyncStorage.getItem("authToken");
+        if (token) {
+          navigation.replace("Home");
+        } else {
+          //token not found it show the login screen itself
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    checkLoginStatus();
+  }, []);  
+
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigation = useNavigation();
 
