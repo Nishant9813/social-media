@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import FirstScreen from './screens/FirstScreen'
 import HomeScreen from './screens/HomeScreen'
 import GSFirstScreen from './screens/GSFirstScreen'
+import TabNavigator from './screens/TabNavigator'
 
 const StackNavigator = () => {
     const Stack = createNativeStackNavigator();
@@ -13,7 +14,7 @@ const StackNavigator = () => {
         <Stack.Navigator>
             <Stack.Screen name="GSFirstscreen" component={GSFirstScreen} options={{headerShown: false}}/>
             <Stack.Screen name="FirstScreen" component={FirstScreen} options={{headerShown: false}}/>
-            <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+            <Stack.Screen name="TabsHome" component={TabNavigator} options={{headerShown: false}}/>
         </Stack.Navigator>
     </NavigationContainer>
   )

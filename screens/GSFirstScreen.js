@@ -13,7 +13,7 @@ const GSFirstScreen = () => {
       try {
         const token = await AsyncStorage.getItem("authToken");
         if (token) {
-          navigation.replace("Home");
+          navigation.replace("TabsHome");
         } else {
           //token not found it show the login screen itself
         }
