@@ -14,18 +14,21 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const FirstScreen = () => {
-  const colorScheme = 'dark';
-    
+  const colorScheme = useColorScheme();
+
   const colors = {
-    background: colorScheme == "dark" ? "#171717" : "white",
-    text: colorScheme === "dark" ? "white" : "#171717",
-    textInput: colorScheme === "dark" ? "#171717" : "white",
-    inputBackground: colorScheme === "dark" ? "white" : "#7BBADE",
-    buttonBackground: colorScheme === "dark" ? "white" : "#7BBADE",
-    buttonTextColor: colorScheme === "dark" ? "#171717" : "white",
+    background: colorScheme == "dark" ? "white" : "#3F384C",
+    text: colorScheme === "dark" ? "#3F384C" : "white",
+    textInput: colorScheme === "dark" ? "white" : "#3F384C",
+    inputBackground: colorScheme === "dark" ? "#7BBADE" : "white",
+    buttonBackground: colorScheme === "dark" ? "#7BBADE" : "white",
+    buttonTextColor: colorScheme === "dark" ? "white" : "#3F384C",
   };
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView
@@ -35,6 +38,9 @@ const FirstScreen = () => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
+        <Pressable onPress={()=>{navigation.goBack()}} style={{ position: "absolute", top: 50, left: 10 }}>
+          <FontAwesome5 name="backward" size={24} color="white" />
+        </Pressable>
         <View style={styles.header}>
           <Text style={[styles.headerText, { color: colors.text }]}>Event</Text>
           <Text style={[styles.subHeaderText, { color: colors.text }]}>
@@ -62,7 +68,7 @@ const FirstScreen = () => {
             <Ionicons name="mail" size={24} color={"#0063AD"} />
             <TextInput
               placeholder="Enter your Registration no."
-              placeholderTextColor="#171717"
+              placeholderTextColor="#3F384C"
               style={[styles.inputField, { color: colors.textInput }]}
             />
           </View>
@@ -75,7 +81,7 @@ const FirstScreen = () => {
             <Fontisto name="locked" size={24} color={"#0063AD"} />
             <TextInput
               placeholder="Enter your password"
-              placeholderTextColor="#171717"
+              placeholderTextColor="#3F384C"
               style={[styles.inputField, { color: colors.textInput }]}
             />
           </View>
