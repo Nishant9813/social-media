@@ -2,13 +2,13 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import LoginScreen from './screens/LoginScreen'
-import RegisterScreen from './screens/RegisterScreen'
+import LoginScreen from './ExtraS/LoginScreen'
+import RegisterScreen from './ExtraS/RegisterScreen'
 import FirstScreen from './screens/FirstScreen'
 import HomeScreen from './screens/HomeScreen'
 import GSFirstScreen from './screens/GSFirstScreen'
-import GSSecondScreen from './screens/GSSecondScreen'
-import GSThirdScreen from './screens/GSThirdScreen'
+import GSSecondScreen from './ExtraS/GSSecondScreen'
+import GSThirdScreen from './ExtraS/GSThirdScreen'
 
 const StackNavigator = () => {
     const Stack = createNativeStackNavigator();
