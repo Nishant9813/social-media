@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import Swiper from "react-native-swiper";
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 
 const GSFirstScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigation = useNavigation();
 
   const handleIndexChanged = (index) => {
     setCurrentIndex(index);
@@ -20,7 +21,6 @@ const GSFirstScreen = () => {
       color={index === currentIndex ? "blue" : "white"}
     />
   );
-  const navigation = useNavigation();
 
   return (
     <Swiper
@@ -40,15 +40,18 @@ const GSFirstScreen = () => {
           <View style={styles.dotsContainer}>
             {[0, 1, 2].map((index) => renderDot(index))}
           </View>
-          <Pressable onPress={()=>handleIndexChanged(currentIndex+1)}>
-          <AntDesign name="arrowright" size={48} color="white" />
-        </Pressable>
+          <Pressable onPress={() => handleIndexChanged(currentIndex + 1)}>
+            <Ionicons name="arrow-forward-circle" size={58} color="white" />
+          </Pressable>
         </View>
       )}
 
       {/* Second Slide */}
       {currentIndex === 1 && (
         <View style={styles.slide}>
+          <Pressable onPress={() => setCurrentIndex(currentIndex - 1)} style={styles.backButton}>
+            <Ionicons name="arrow-back-circle-sharp" size={44} color="white" />
+          </Pressable>
           <Image source={require("../assets/gs2.png")} style={styles.image} />
           <Text style={styles.title}>#Tagline</Text>
           <Text style={styles.text}>
@@ -57,15 +60,18 @@ const GSFirstScreen = () => {
           <View style={styles.dotsContainer}>
             {[0, 1, 2].map((index) => renderDot(index))}
           </View>
-          <Pressable onPress={()=>handleIndexChanged(currentIndex+1)}>
-          <AntDesign name="arrowright" size={48} color="white" />
-        </Pressable>
+          <Pressable onPress={() => handleIndexChanged(currentIndex + 1)}>
+            <Ionicons name="arrow-forward-circle" size={58} color="white" />
+          </Pressable>
         </View>
       )}
 
       {/* Third Slide */}
       {currentIndex === 2 && (
         <View style={styles.slide}>
+            <Pressable onPress={() => setCurrentIndex(currentIndex - 1)} style={styles.backButton}>
+            <Ionicons name="arrow-back-circle-sharp" size={44} color="white" />
+          </Pressable>
           <Image source={require("../assets/gs3.png")} style={styles.image} />
           <Text style={styles.title}>Welcome to our app!</Text>
           <Text style={styles.text}>
@@ -74,9 +80,9 @@ const GSFirstScreen = () => {
           <View style={styles.dotsContainer}>
             {[0, 1, 2].map((index) => renderDot(index))}
           </View>
-          <Pressable onPress={()=> navigation.navigate("FirstScreen")}>
-          <AntDesign name="arrowright" size={48} color="white" />
-        </Pressable>
+          <Pressable onPress={() => navigation.navigate("FirstScreen")}>
+            <Ionicons name="arrow-forward-circle" size={58} color="white" />
+          </Pressable>
         </View>
       )}
     </Swiper>
@@ -92,6 +98,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingTop: 50,
+    position: 'relative',
   },
   image: {
     width: 429,
@@ -115,6 +122,12 @@ const styles = StyleSheet.create({
   dotsContainer: {
     flexDirection: "row",
     marginTop: 25,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    left: 10,
+    zIndex: 1, 
   },
 });
 
