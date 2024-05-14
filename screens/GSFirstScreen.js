@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: "white",
   },
-  text: {
+  text:{
     fontSize: 20,
     marginTop: 10,
     color: "white",

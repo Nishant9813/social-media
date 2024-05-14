@@ -15,11 +15,10 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 const jwt = require("jsonwebtoken");
 const User = require("./models/user");
+const Post = require("./models/post");
 
 mongoose
-  .connect("mongodb+srv://nishant:Nishant@cluster0.wxdfkze.mongodb.net/", {
-  
-  })
+  .connect("mongodb+srv://nishant:Nishant@cluster0.wxdfkze.mongodb.net/", {})
   .then(() => {
     console.log("Connected to DB");
   })
@@ -30,8 +29,6 @@ mongoose
 app.listen(port, () => {
   console.log("Server running on port: ", port);
 });
-
-
 
 //endpoint for registration of the user
 
@@ -93,4 +90,37 @@ app.post("/login", (req, res) => {
       console.log("Error in finding the user ", error);
       res.status(500).json({ message: "Internal Server Error!" });
     });
+});
+
+//endpoint to create a post
+app.post("/create", async (req, res) => {
+  try {
+    const { description, imageUrl, userId } = req.body;
+
+    const newPost = new Post({
+      description: description,
+      imageUrl: imageUrl,
+      user: userId,
+    });
+
+    await newPost.save();
+
+    res
+      .status(201)
+      .json({ message: "Post Created Successfully", post: newPost });
+  } catch (error) {
+    console.log("Error create the post ", error),
+      res.status(500).json({ message: "Error Creating the post" });
+  }
+});
+
+//endpoint to fetch all the post
+app.get("/all", async (req, res) => {
+  try {
+    const posts = await Post.find().populate("user", "name profileImage");
+    res.status(201).json({ posts });
+  } catch (error) {
+    console.log("Error fetching all the posts ", error),
+      res.status(500).json({ message: "Error fetching all the posts" });
+  }
 });

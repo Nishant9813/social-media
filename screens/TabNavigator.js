@@ -4,7 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./HomeScreen";
 import EventScreen from "./EventScreen";
-import UserScreen from "./UserScreen";
 import NewsScreen from "./NewsScreen";
 import SeetingScreen from "./SeetingScreen";
 import { Octicons } from "@expo/vector-icons";
@@ -12,6 +11,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from '@expo/vector-icons';
+import PostScreen from "./PostScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,6 +30,7 @@ const TabNavigator = () => {
           elevation: 0,
           borderRadius: 15,
           height: 60,
+          borderColor:"black"
         },
         tabBarLabelStyle: { padding: 10 },
       }}
@@ -64,7 +65,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="User"
-        component={UserScreen}
+        component={PostScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (

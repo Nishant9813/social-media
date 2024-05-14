@@ -64,7 +64,7 @@ const FirstScreen = () => {
         console.log(res);
         const token = res.data.token;
         AsyncStorage.setItem("authToken", token);
-        navigation.navigate("TabsScreen");
+        navigation.navigate("TabsHome");
       })
       .catch(error => {
         if (error.response) {
