@@ -92,6 +92,22 @@ app.post("/login", (req, res) => {
     });
 });
 
+//user's profile
+app.get("/profile/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving user profile" });
+  }
+});
+
 //endpoint to create a post
 app.post("/create", async (req, res) => {
   try {
@@ -124,3 +140,5 @@ app.get("/all", async (req, res) => {
       res.status(500).json({ message: "Error fetching all the posts" });
   }
 });
+
+
