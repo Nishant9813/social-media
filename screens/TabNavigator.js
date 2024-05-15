@@ -12,6 +12,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import PostScreen from "./PostScreen";
+import { StatusBar } from "expo-status-bar";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,7 +27,7 @@ const TabNavigator = () => {
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: {
-            backgroundColor: "#3F384C",
+            backgroundColor: "black",
             height: Platform.OS === "ios" ? 80 : 60, // Adjust height for iOS
             borderTopWidth: 0, // Remove top border on Android
           },
@@ -112,6 +113,8 @@ const TabNavigator = () => {
 
 const AppNavigator = () => {
   return (
+    <>
+  
     <Stack.Navigator>
       <Stack.Screen
         name="Tabs"
@@ -124,16 +127,17 @@ const AppNavigator = () => {
               name="message1"
               size={24}
               color="white"
-              style={{ marginRight: 20 }}
+              style={{ marginRight: 20}}
             />
           ),
-          headerStyle: {
-            backgroundColor: "#3F384C",
-          },
+          headerStyle : {backgroundColor:"black"},
           headerTintColor: "#fff",
         }}
       />
     </Stack.Navigator>
+    <StatusBar backgroundColor="black" style="light" />
+    </>
+   
   );
 };
 

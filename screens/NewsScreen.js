@@ -29,7 +29,9 @@ const NewsScreen = () => {
   const [user, setUser] = useState("");
   const [posts, setPosts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [expandedPosts, setExpandedPosts] = useState([]);
   const navigation = useNavigation();
+  const [likeCount, setLikeCount] = useState(100);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -84,10 +86,15 @@ const NewsScreen = () => {
   }, [userId]);
 
   const MAX_LINES = 2;
-  const [showfullText, setShowfullText] = useState(false);
 
-  const toggleShowFullText = useCallback(() => {
-    setShowfullText((prevState) => !prevState);
+  const toggleShowFullText = useCallback((postId) => {
+    setExpandedPosts((prevExpandedPosts) => {
+      if (prevExpandedPosts.includes(postId)) {
+        return prevExpandedPosts.filter((id) => id !== postId);
+      } else {
+        return [...prevExpandedPosts, postId];
+      }
+    });
   }, []);
 
   const handleLikePost = useCallback(
@@ -163,15 +170,24 @@ const NewsScreen = () => {
                   <Text
                     style={[
                       styles.postDescription,
-                      showfullText && { maxHeight: "100%" },
+                      !expandedPosts.includes(item._id) && {
+                        maxHeight: MAX_LINES * 20,
+                      },
                     ]}
-                    numberOfLines={showfullText ? undefined : MAX_LINES}
+                    numberOfLines={
+                      !expandedPosts.includes(item._id) ? MAX_LINES : undefined
+                    }
                   >
                     {item?.description}
                   </Text>
-                  {!showfullText && (
-                    <Pressable onPress={toggleShowFullText}>
-                      <Text style={styles.readMore}>See more</Text>
+                  {!expandedPosts.includes(item._id) && (
+                    <Pressable onPress={() => toggleShowFullText(item._id)}>
+                      <Text style={styles.readMore}>Read More</Text>
+                    </Pressable>
+                  )}
+                  {expandedPosts.includes(item._id) && (
+                    <Pressable onPress={() => toggleShowFullText(item._id)}>
+                      <Text style={styles.readMore}>Read Less</Text>
                     </Pressable>
                   )}
                 </View>
@@ -179,7 +195,7 @@ const NewsScreen = () => {
                   style={styles.postImage}
                   source={{ uri: item?.imageUrl }}
                 />
-                {posts.length > 0 && item?.likesCount > 0 && (
+                {item.likesCount > 0 && (
                   <View style={styles.likesContainer}>
                     <SimpleLineIcons name="like" size={16} color="#0072b1" />
                     <Text style={styles.likesCount}>{item?.likesCount}</Text>
@@ -187,7 +203,7 @@ const NewsScreen = () => {
                 )}
 
                 <View style={styles.actionsContainer}>
-                  <Pressable onPress={() => handleLikePost(item?._id)}>
+                  <Pressable onPress={() => handleLikePost(item._id)}>
                     <AntDesign
                       name="like2"
                       size={28}
@@ -211,9 +227,9 @@ const NewsScreen = () => {
                     <Text style={styles.actionText}>Send</Text>
                   </Pressable>
                 </View>
-                <View
+                {/* <View
                   style={{ height: 1, backgroundColor: "gray", marginTop: 10 }}
-                />
+                /> */}
               </View>
             ))}
           </View>
@@ -237,6 +253,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 18,
   },
   postContainer: {
+    borderRadius: 15,
+    padding:2,
+    backgroundColor:"#121214",
     marginBottom: 20,
   },
   userInfo: {
