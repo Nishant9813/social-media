@@ -5,12 +5,15 @@ import {
   ScrollView,
   Image,
   Pressable,
+  Dimensions,
+  StatusBar,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -18,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import { firebase } from "../firebase";
 import axios from "axios";
 
+const screenDimensions = Dimensions.get("screen");
 const PostScreen = () => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
@@ -40,7 +44,7 @@ const PostScreen = () => {
         // Handle the error, e.g., display an error message to the user
       }
     };
-  
+
     fetchUser();
   }, []);
 
@@ -124,17 +128,23 @@ const PostScreen = () => {
     }
   };
   return (
-    <ScrollView style={styles.container}>
+   
+    <View style={styles.fullbody}>
+    <SafeAreaView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-around",
+          justifyContent: "space-between",
           marginVertical: 12,
+          marginHorizontal: 10,
+          // gap:100,
+          borderRadius: 15,
+          backgroundColor: "#212121",
         }}
       >
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-          <Entypo name="circle-with-cross" size={24} color="white" />
           <View style={{ flexDirection: "row", alignItems: "center", gap: 7 }}>
             <Image
               style={{ width: 40, height: 40, borderRadius: 20 }}
@@ -151,12 +161,11 @@ const PostScreen = () => {
             flexDirection: "row",
             alignItems: "center",
             gap: 10,
-            marginRight: 8,
           }}
         >
           <Entypo name="back-in-time" size={24} color="white" />
           <Pressable
-          onPress={creatPost}
+            onPress={creatPost}
             style={{
               padding: 10,
               backgroundColor: "#0072b1",
@@ -183,32 +192,47 @@ const PostScreen = () => {
         onChangeText={(text) => setDescription(text)}
         placeholderTextColor={"white"}
         style={{
-          marginHorizontal: 15,
-          fontSize: 15,
-          marginTop: 10,
+          margin: 15,
+          padding: 10,
+          fontSize: 16,
           color: "white",
+          backgroundColor: "#212121",
+          borderRadius: 10,
+          maxHeight:300
         }}
         multiline={true}
         numberOfLines={5}
         textAlignVertical={"top"}
       />
 
-      <View>
+      <View style={{alignItems:"center",justifyContent:"center"}}>
         {image && (
           <Image
             source={{ uri: image }}
-            style={{ width: "100%", height: 240, marginVertical: 20 }}
+            style={{ width: "90%", height: 240, marginVertical: 20,borderRadius:15 }}
           />
         )}
       </View>
 
-      <Pressable style={{ flexDirection: "coloumn", marginHorizontal: "auto" }}>
+      <Pressable
+        style={{
+          flexDirection: "coloumn",
+          marginHorizontal: "auto",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#212121",
+          width: 70,
+          height:70,
+          borderRadius:50,
+          marginTop: 10
+        }}
+      >
         <Pressable
           onPress={pickImage}
           style={{
             width: 40,
             height: 40,
-            marginTop: 15,
+            // marginTop: 15,
             backgroundColor: "E0E0E0",
             borderRadius: 20,
             justifyContent: "center",
@@ -220,14 +244,24 @@ const PostScreen = () => {
         <Text style={{ color: "white" }}>Media</Text>
       </Pressable>
     </ScrollView>
+    </SafeAreaView>
+    </View>
   );
 };
 
 export default PostScreen;
 
 const styles = StyleSheet.create({
-  container: {
+  fullbody: {
     flex: 1,
-    backgroundColor: "#121111",
+    backgroundColor: "black",
+  },
+  container: {
+    height: screenDimensions.height - 180,
+    paddingTop: StatusBar.currentHeight - 15,
+    backgroundColor: "black",
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
 });
