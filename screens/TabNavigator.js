@@ -14,6 +14,8 @@ import { AntDesign } from "@expo/vector-icons";
 import PostScreen from "./PostScreen";
 import { StatusBar } from "expo-status-bar";
 
+
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 

@@ -21,6 +21,7 @@ import {
 import moment from "moment";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import User from "../api/models/user";
 
 const screenDimensions = Dimensions.get("screen");
 
@@ -133,109 +134,109 @@ const NewsScreen = () => {
     }
     setRefreshing(false);
   }, [fetchAllPosts]);
-
   return (
     <View style={styles.fullbody}>
-      <SafeAreaView style={styles.container}>
-        <ScrollView
-          style={styles.scrollView}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              colors={["#0072b1"]}
-              tintColor={"#0072b1"}
-            />
-          }
-        >
-          <View>
-            {posts.map((item, index) => (
-              <View key={index} style={styles.postContainer}>
-                <View style={styles.userInfo}>
-                  <Image
-                    style={styles.userAvatar}
-                    source={{ uri: item?.user?.profileImage }}
-                  />
-                  <View style={styles.userInfoText}>
-                    <Text style={styles.userName}>{item?.user?.name}</Text>
-                    <Text style={styles.userDescription}>
-                      Engineer Graduate | LinkedIn Member
-                    </Text>
-                    <Text style={styles.postDate}>
-                      {moment(item.createdAt).format("MMMM Do YYYY")}
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.postContent}>
-                  <Text
-                    style={[
-                      styles.postDescription,
-                      !expandedPosts.includes(item._id) && {
-                        maxHeight: MAX_LINES * 20,
-                      },
-                    ]}
-                    numberOfLines={
-                      !expandedPosts.includes(item._id) ? MAX_LINES : undefined
-                    }
-                  >
-                    {item?.description}
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#0072b1"]}
+            tintColor={"#0072b1"}
+          />
+        }
+      >
+        <View>
+          {posts.map((item, index) => (
+            <View key={index} style={styles.postContainer}>
+              <View style={styles.userInfo}>
+                <Image
+                  style={styles.userAvatar}
+                  source={{ uri: item?.user?.image }}
+                />
+                <View style={styles.userInfoText}>
+                  <Text style={styles.userName}>{item?.user?.name}</Text>
+                  <Text style={styles.userDescription}>
+                    Engineer Graduate | LinkedIn Member
                   </Text>
-                  {!expandedPosts.includes(item._id) && (
-                    <Pressable onPress={() => toggleShowFullText(item._id)}>
-                      <Text style={styles.readMore}>Read More</Text>
-                    </Pressable>
-                  )}
-                  {expandedPosts.includes(item._id) && (
-                    <Pressable onPress={() => toggleShowFullText(item._id)}>
-                      <Text style={styles.readMore}>Read Less</Text>
-                    </Pressable>
-                  )}
+                  <Text style={styles.postDate}>
+                    {moment(item.createdAt).format("MMMM Do YYYY")}
+                  </Text>
                 </View>
+              </View>
+              <View style={styles.postContent}>
+                <Text
+                  style={[
+                    styles.postDescription,
+                    !expandedPosts.includes(item._id) && {
+                      maxHeight: MAX_LINES * 20,
+                    },
+                  ]}
+                  numberOfLines={
+                    !expandedPosts.includes(item._id) ? MAX_LINES : undefined
+                  }
+                >
+                  {item?.description}
+                </Text>
+                {!expandedPosts.includes(item._id) ? (
+                  <Pressable onPress={() => toggleShowFullText(item._id)}>
+                    <Text style={styles.readMore}>Read More</Text>
+                  </Pressable>
+                ) : (
+                  <Pressable onPress={() => toggleShowFullText(item._id)}>
+                    <Text style={styles.readMore}>Read Less</Text>
+                  </Pressable>
+                )}
+              </View>
+              {item.imageUrl && (
                 <Image
                   style={styles.postImage}
                   source={{ uri: item?.imageUrl }}
                 />
-                {item.likesCount > 0 && (
-                  <View style={styles.likesContainer}>
-                    <SimpleLineIcons name="like" size={16} color="#0072b1" />
-                    <Text style={styles.likesCount}>{item?.likesCount}</Text>
-                  </View>
-                )}
-
-                <View style={styles.actionsContainer}>
-                  <Pressable onPress={() => handleLikePost(item._id)}>
-                    <AntDesign
-                      name="like2"
-                      size={28}
-                      color={item?.isLiked ? "#0072b1" : "gray"}
-                    />
-                    <Text
-                      style={[
-                        styles.actionText,
-                        { color: item?.isLiked ? "white" : "gray" },
-                      ]}
-                    >
-                      Like
-                    </Text>
-                  </Pressable>
-                  <Pressable style={{ alignItems: "center" }}>
-                    <FontAwesome name="comment-o" size={28} color="gray" />
-                    <Text style={styles.actionText}>Comment</Text>
-                  </Pressable>
-                  <Pressable>
-                    <Feather name="send" size={28} color="gray" />
-                    <Text style={styles.actionText}>Send</Text>
-                  </Pressable>
+              )}
+              {item.likesCount > 0 && (
+                <View style={styles.likesContainer}>
+                  <SimpleLineIcons name="like" size={16} color="#0072b1" />
+                  <Text style={styles.likesCount}>{item?.likesCount}</Text>
                 </View>
-                {/* <View
-                  style={{ height: 1, backgroundColor: "gray", marginTop: 10 }}
-                /> */}
+              )}
+
+              <View style={styles.actionsContainer}>
+                <Pressable onPress={() => handleLikePost(item._id)}>
+                  <AntDesign
+                    name="like2"
+                    size={28}
+                    color={item?.isLiked ? "#0072b1" : "gray"}
+                  />
+                  <Text
+                    style={[
+                      styles.actionText,
+                      { color: item?.isLiked ? "white" : "gray" },
+                    ]}
+                  >
+                    Like
+                  </Text>
+                </Pressable>
+                <Pressable style={{ alignItems: "center" }}>
+                  <FontAwesome name="comment-o" size={28} color="gray" />
+                  <Text style={styles.actionText}>Comment</Text>
+                </Pressable>
+                <Pressable>
+                  <Feather name="send" size={28} color="gray" />
+                  <Text style={styles.actionText}>Send</Text>
+                </Pressable>
               </View>
-            ))}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </View>
+              {/* <View
+                style={{ height: 1, backgroundColor: "gray", marginTop: 10 }}
+              /> */}
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  </View>
   );
 };
 

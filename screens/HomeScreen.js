@@ -14,6 +14,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { MaterialIcons } from "@expo/vector-icons";
+import 'react-native-get-random-values';
+
 
 const screenDimensions = Dimensions.get("screen");
 
