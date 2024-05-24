@@ -6,6 +6,7 @@ import FirstScreen from './screens/FirstScreen'
 import HomeScreen from './screens/HomeScreen'
 import GSFirstScreen from './screens/GSFirstScreen'
 import TabNavigator from './screens/TabNavigator'
+import { StatusBar } from 'expo-status-bar'
 
 const StackNavigator = () => {
     const Stack = createNativeStackNavigator();
@@ -16,6 +17,7 @@ const StackNavigator = () => {
             <Stack.Screen name="FirstScreen" component={FirstScreen} options={{headerShown: false}}/>
             <Stack.Screen name="TabsHome" component={TabNavigator} options={{headerShown: false}}/>
         </Stack.Navigator>
+        <StatusBar backgroundColor="black" style="light" />
     </NavigationContainer>
   )
 }

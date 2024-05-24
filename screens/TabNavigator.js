@@ -12,7 +12,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import PostScreen from "./PostScreen";
-import { StatusBar } from "expo-status-bar";
+
 
 
 
@@ -137,7 +137,7 @@ const AppNavigator = () => {
         }}
       />
     </Stack.Navigator>
-    <StatusBar backgroundColor="black" style="light" />
+    
     </>
    
   );

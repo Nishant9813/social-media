@@ -112,7 +112,7 @@ const GSFirstScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#3F384C",
+    backgroundColor: "black",
   },
   slide: {
     flex: 1,

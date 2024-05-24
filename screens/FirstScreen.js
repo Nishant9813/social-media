@@ -24,7 +24,7 @@ const FirstScreen = () => {
   const colorScheme = "light";
 
   const colors = {
-    background: colorScheme == "dark" ? "white" : "#3F384C",
+    background: colorScheme == "dark" ? "white" : "black",
     text: colorScheme === "dark" ? "#3F384C" : "white",
     textInput: colorScheme === "dark" ? "white" : "#3F384C",
     inputBackground: colorScheme === "dark" ? "#7BBADE" : "white",
